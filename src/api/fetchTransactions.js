@@ -1,4 +1,4 @@
-import transactions from '../data/transactions';
+import transactions from '../data/Transactions';
 
 export const fetchTransactions = () => {
   return new Promise((resolve, reject) => {

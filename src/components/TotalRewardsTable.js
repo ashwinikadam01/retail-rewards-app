@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, TableHead, TableBody, TableRow, TableCell, Paper } from '@mui/material';
+import SortableTable from './SortableTable';
 
 const TotalRewardsTable = ({ transactions }) => {
   const totals = {};
@@ -13,26 +13,16 @@ const TotalRewardsTable = ({ transactions }) => {
 
   const totalArray = Object.entries(totals).map(([name, points]) => ({ name, points }));
 
+  const columns = [
+    { id: 'name', label: 'Customer Name' },
+    { id: 'points', label: 'Reward Points' },
+  ];
+
   return (
-    <Paper className='m-tb-20'>
-			<h3 className='m-tb-10'>Total Rewards</h3>
-			<Table className='table'>
-				<TableHead>
-					<TableRow className='table-header'>
-						<TableCell>Customer Name</TableCell>
-						<TableCell>Reward Points</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {totalArray.map((row, idx) => (
-            <TableRow key={idx} className='hover-row'>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.points}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Paper>
+    <>
+      <h3 className="m-tb-10">Total Rewards</h3>
+      <SortableTable data={totalArray} columns={columns} />
+    </>
   );
 };
 

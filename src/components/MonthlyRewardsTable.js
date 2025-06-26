@@ -1,13 +1,12 @@
 import React from 'react';
-import { Table, TableHead, TableBody, TableRow, TableCell, Paper } from '@mui/material';
+import SortableTable from './SortableTable';
 
 const MonthlyRewardsTable = ({ transactions }) => {
   const rewards = {};
 
   transactions.forEach(tx => {
-    const date = new Date(tx.date);
-    const month = date.toLocaleString('default', { month: 'short' });
-    const year = date.getFullYear();
+    const month = new Date(tx.date).toLocaleString('default', { month: 'short' });
+    const year = new Date(tx.date).getFullYear();
     const key = `${tx.customerId}-${month}-${year}`;
 
     if (!rewards[key]) {
@@ -25,32 +24,19 @@ const MonthlyRewardsTable = ({ transactions }) => {
 
   const rewardArray = Object.values(rewards);
 
+  const columns = [
+    { id: 'customerId', label: 'Customer ID' },
+    { id: 'name', label: 'Name' },
+    { id: 'month', label: 'Month' },
+    { id: 'year', label: 'Year' },
+    { id: 'points', label: 'Reward Points' },
+  ];
+
   return (
-    <Paper className='m-tb-20'>
-      <h3 className='m-tb-10'>User Monthly Rewards</h3>
-      <Table className='table'>
-        <TableHead>
-          <TableRow className='table-header'>
-            <TableCell>Customer ID</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Month</TableCell>
-            <TableCell>Year</TableCell>
-            <TableCell>Reward Points</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rewardArray.map((r, idx) => (
-            <TableRow key={idx} className='hover-row'>
-              <TableCell>{r.customerId}</TableCell>
-              <TableCell>{r.name}</TableCell>
-              <TableCell>{r.month}</TableCell>
-              <TableCell>{r.year}</TableCell>
-              <TableCell>{r.points}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Paper>
+    <>
+      <h3 className="m-tb-10">User Monthly Rewards</h3>
+      <SortableTable data={rewardArray} columns={columns} />
+    </>
   );
 };
 
