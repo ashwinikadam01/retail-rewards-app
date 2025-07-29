@@ -18,10 +18,11 @@ const TotalRewardsTable = ({ transactions }) => {
     { id: 'points', label: 'Reward Points' },
   ];
 
+  const tableHeader = "Total Rewards";
+
   return (
     <>
-      <h3 className="m-tb-10">Total Rewards</h3>
-      <SortableTable data={totalArray} columns={columns} />
+      <SortableTable data={totalArray} columns={columns} tableHeader={tableHeader} />
     </>
   );
 };

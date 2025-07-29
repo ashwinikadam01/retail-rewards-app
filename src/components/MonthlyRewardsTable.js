@@ -1,41 +1,71 @@
 import React from 'react';
 import SortableTable from './SortableTable';
+import { formatDate } from '../helpers/formatDate';
 
 const MonthlyRewardsTable = ({ transactions }) => {
-  const rewards = {};
+  const rewardsByMonthYear = {};
 
   transactions.forEach(tx => {
-    const month = new Date(tx.date).toLocaleString('default', { month: 'short' });
-    const year = new Date(tx.date).getFullYear();
-    const key = `${tx.customerId}-${month}-${year}`;
+    const dateObj = new Date(tx.date);
+    const month = dateObj.toLocaleString('default', { month: 'long' });
+    const year = dateObj.getFullYear();
+    const key = `${month} ${year}`;
+    const customerKey = `${tx.customerId}-${key}`;
 
-    if (!rewards[key]) {
-      rewards[key] = {
+    if (!rewardsByMonthYear[key]) {
+      rewardsByMonthYear[key] = {};
+    }
+
+    if (!rewardsByMonthYear[key][customerKey]) {
+      rewardsByMonthYear[key][customerKey] = {
         customerId: tx.customerId,
         name: tx.name,
-        month,
+        id: tx.id,
+        date: formatDate(tx.date),
         year,
+        amount: 0,
         points: 0,
       };
     }
 
-    rewards[key].points += tx.rewardPoints;
+    rewardsByMonthYear[key][customerKey].points += tx.rewardPoints;
+    rewardsByMonthYear[key][customerKey].amount += tx.amount;
   });
-
-  const rewardArray = Object.values(rewards);
 
   const columns = [
     { id: 'customerId', label: 'Customer ID' },
     { id: 'name', label: 'Name' },
-    { id: 'month', label: 'Month' },
+    { id: 'id', label: 'Transaction ID' },
+    { id: 'date', label: 'Date' },
     { id: 'year', label: 'Year' },
+    { id: 'amount', label: 'Amount ($)' },
     { id: 'points', label: 'Reward Points' },
   ];
 
+  const sortedKeys = Object.keys(rewardsByMonthYear).sort((a, b) => {
+    const dateA = new Date(a);
+    const dateB = new Date(b);
+    return dateA - dateB;
+  });
+
   return (
     <>
-      <h3 className="m-tb-10">User Monthly Rewards</h3>
-      <SortableTable data={rewardArray} columns={columns} />
+      {sortedKeys.map((key, index) => {
+        const customerData = rewardsByMonthYear[key];
+        const tableData = Object.values(customerData).map(item => ({
+          ...item,
+          amount: item.amount.toFixed(2),
+        }));
+        return (
+          <SortableTable
+            key={key}
+            data={tableData}
+            columns={columns}
+            tableSubHeader={key}
+            mainHeader={index === 0 ? 'User Monthly Rewards' : null}
+          />
+        );
+      })}
     </>
   );
 };

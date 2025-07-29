@@ -13,6 +13,7 @@ This React app calculates customer reward points based on purchase transactions,
   - Customer monthly rewards
   - Customer total rewards
 - Pure React with hooks, no Redux
+- Optionally display totals per month or filtered range
 
 ## Setup
 1. Run `git clone https://github.com/ashwinikadam01/retail-rewards-app.git`
@@ -26,8 +27,8 @@ This React app calculates customer reward points based on purchase transactions,
 - 🧾 Transactions Table
 ![Transactions Table](screenshots/transactions-table.png)
 
-- 📅 Monthly Rewards
-![Monthly Rewards Table](screenshots/monthly-rewards.png)
+- 📅 User Monthly Rewards
+![Monthly Rewards Table](screenshots/user-monthly-rewards.png)
 
 - 🏆 Total Rewards
 ![Total Rewards Table](screenshots/total-rewards.png)
@@ -55,6 +56,7 @@ npm test -- --watchAll=false
 - Reward points calculated per transaction on load.
 - Data aggregated for monthly and total reward views.
 - Material UI tables provide responsive UI.
+- Metrics filtered by date range (optional, dynamic)
 
 ## Errors and Edge Cases
 - Handles transactions with price < 50 (0 points)

@@ -21,10 +21,11 @@ const TransactionsTable = ({ transactions }) => {
     { id: 'rewardPoints', label: 'Reward Points' },
   ];
 
+  const tableHeader = "All Transactions";
+
   return (
     <>
-      <h3 className="m-tb-10">Transactions</h3>
-      <SortableTable data={formattedData} columns={columns} />
+      <SortableTable data={formattedData} columns={columns} tableHeader={tableHeader} />
     </>
   );
 };

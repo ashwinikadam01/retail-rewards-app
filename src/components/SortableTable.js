@@ -4,7 +4,7 @@ import {
 	TableSortLabel, TablePagination, TextField, Box
 } from '@mui/material';
 
-const SortableTable = ({ data, columns }) => {
+const SortableTable = ({ data, columns, tableHeader, tableSubHeader, mainHeader }) => {
 	const [order, setOrder] = useState('asc');
 	const [orderBy, setOrderBy] = useState('');
 	const [page, setPage] = useState(0);
@@ -48,22 +48,26 @@ const SortableTable = ({ data, columns }) => {
 	const paginatedData = sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
 	return (
-		<Box className="m-tb-20">
-			<TextField
-				label="Search"
-				variant="outlined"
-				size="small"
-				value={filterText}
-				onChange={handleFilterChange}
-				fullWidth
-				className="m-b-10 w-30-per d-flex flt-right"
-				inputProps={{ autoComplete: 'off' }}
-			/>
+		<Box className="m-tb-30">
+			{mainHeader && <h3 className="m-0" >{mainHeader}</h3>}
+			<Box display="flex" justifyContent="space-between" alignItems="center" className="m-b-10">
+				{tableHeader && <h3 className="m-tb-10" >{tableHeader}</h3>}
+        {tableSubHeader && <h4 className="m-b-10 clr-sub-header">{tableSubHeader}</h4>}
+        <TextField
+          label="Search"
+          variant="outlined"
+          size="small"
+          value={filterText}
+          onChange={handleFilterChange}
+          className="m-b-10 w-25-per d-flex flt-right"
+          inputProps={{ autoComplete: 'off' }}
+        />
+      </Box>
 			<Table className="table">
 				<TableHead>
 					<TableRow className="table-header">
 						{columns.map((col) => (
-							<TableCell key={col.id}>
+							<TableCell key={col.id} className="table-cell-bordered">
 								<TableSortLabel
 									active={orderBy === col.id}
 									direction={orderBy === col.id ? order : 'asc'}
@@ -79,7 +83,7 @@ const SortableTable = ({ data, columns }) => {
 					{paginatedData.map((row, i) => (
 						<TableRow key={i} className="hover-row">
 							{columns.map((col) => (
-								<TableCell key={col.id}>{row[col.id]}</TableCell>
+								<TableCell key={col.id} className="table-cell-bordered">{row[col.id]}</TableCell>
 							))}
 						</TableRow>
 					))}
@@ -93,6 +97,7 @@ const SortableTable = ({ data, columns }) => {
 				rowsPerPage={rowsPerPage}
 				onRowsPerPageChange={handleChangeRowsPerPage}
 				rowsPerPageOptions={[5, 10, 25]}
+				className="table-pagination-bordered custom-pagination"
 			/>
 		</Box>
 	);
